@@ -6,13 +6,80 @@
     <title>Film</title>
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script defer src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
 </head>
 <body>
-    <marquee> Film </marquee>
+    <marquee class="rainbow-marquee"> Film </marquee>
+    <h1>Add a New Film</h1>
 
+    <!-- Film form -->
+    <form id="film-form" onsubmit="addFilm(event)">
+        <label for="film-title">Title:</label>
+        <input type="text" id="film-title" name="title" required><br><br>
+
+        <label for="film-author">Author:</label>
+        <input type="text" id="film-author" name="author" required><br><br>
+
+        <label for="film-director">Director:</label>
+        <input type="text" id="film-director" name="director" required><br><br>
+
+        <label for="film-genre">Genre:</label>
+        <input type="text" id="film-genre" name="genre" required><br><br>
+
+        <label for="film-year">Year:</label>
+        <input type="number" id="film-year" name="year" required><br><br>
+
+        <label for="film-description">Description:</label><br>
+        <textarea id="film-description" name="description" rows="4" required></textarea><br><br>
+
+        <button type="submit">Add Film</button>
+    </form>
+
+    <!-- Firebase -->
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDeQiMJRp_Yg-WdT6hF1aQsDfg45rxn9uc",
+            authDomain: "yaoi-ai-2f819.firebaseapp.com",
+            projectId: "yaoi-ai-2f819",
+            storageBucket: "yaoi-ai-2f819.firebasestorage.app",
+            messagingSenderId: "296158977150",
+            appId: "1:296158977150:web:461f7576296897776c4c2f"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        window.addFilm = async function(event) {
+            event.preventDefault();
+
+            const title = document.getElementById("film-title").value;
+            const author = document.getElementById("film-author").value;
+            const director = document.getElementById("film-director").value;
+            const genre = document.getElementById("film-genre").value;
+            const year = document.getElementById("film-year").value;
+            const description = document.getElementById("film-description").value;
+
+            try {
+                await addDoc(collection(db, "films"), {
+                    title: title,
+                    author: author,
+                    director: director,
+                    genre: genre,
+                    year: year,
+                    description: description
+                });
+                alert("Film added successfully!");
+                document.getElementById("film-form").reset();
+            } catch (error) {
+                console.error("Error adding film: ", error);
+                alert("Error adding film. Please try again.");
+            }
+        };
+    </script>
 </body>
 </html>

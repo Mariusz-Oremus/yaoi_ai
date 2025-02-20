@@ -3,16 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style.css">
     <title>Show</title>
-    <!-- Bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script defer src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
 </head>
 <body>
-    <marquee> Show </marquee>
+    <marquee class="rainbow-marquee"> Show </marquee>
+    <h1>Add a New Show</h1>
 
+    <form id="show-form" onsubmit="addShow(event)">
+        <label for="show-title">Title:</label>
+        <input type="text" id="show-title" name="title" required><br><br>
+
+        <label for="show-author">Author:</label>
+        <input type="text" id="show-author" name="author" required><br><br>
+
+        <label for="show-director">Director:</label>
+        <input type="text" id="show-director" name="director" required><br><br>
+
+        <label for="show-genre">Genre:</label>
+        <input type="text" id="show-genre" name="genre" required><br><br>
+
+        <label for="show-year">Year:</label>
+        <input type="number" id="show-year" name="year" required><br><br>
+
+        <label for="show-description">Description:</label><br>
+        <textarea id="show-description" name="description" rows="4" required></textarea><br><br>
+
+        <button type="submit">Add Show</button>
+    </form>
+
+    <h2>Show List</h2>
+    <table id="show-table" border="1">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Director</th>
+                <th>Genre</th>
+                <th>Year</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            </tbody>
+    </table>
+
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDeQiMJRp_Yg-WdT6hF1aQsDfg45rxn9uc",
+            authDomain: "yaoi-ai-2f819.firebaseapp.com",
+            projectId: "yaoi-ai-2f819",
+            storageBucket: "yaoi-ai-2f819.firebasestorage.app",
+            messagingSenderId: "296158977150",
+            appId: "1:296158977150:web:461f7576296897776c4c2f"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        window.addShow = async function(event) {
+            event.preventDefault();
+
+            const title = document.getElementById("show-title").value;
+            const author = document.getElementById("show-author").value;
+            const director = document.getElementById("show-director").value;
+            const genre = document.getElementById("show-genre").value;
+            const year = document.getElementById("show-year").value;
+            const description = document.getElementById("show-description").value;
+
+            try {
+                await addDoc(collection(db, "shows"), { // Changed "films" to "shows"
+                    title: title,
+                    author: author,
+                    director: director,
+                    genre: genre,
+                    year: year,
+                    description: description
+                });
+                alert("Show added successfully!");
+                document.getElementById("show-form").reset();
+                displayShows(); // Refresh the show list after adding a new show
+            } catch (error) {
+                console.error("Error adding show: ", error);
+                alert("Error adding show. Please try again.");
+            }
+        };
+
+        async function displayShows() {
+            const querySnapshot = await getDocs(collection(db, "shows")); // Changed "films" to "shows"
+            const tableBody = document.querySelector("#show-table tbody");
+            tableBody.innerHTML = ""; // Clear the table before adding new data
+
+            querySnapshot.forEach((doc) => {
+                const show = doc.data();
+                const row = tableBody.insertRow();
+                const titleCell = row.insertCell(0);
+                const authorCell = row.insertCell(1);
+                const directorCell = row.insertCell(2);
+                const genreCell = row.insertCell(3);
+                const yearCell = row.insertCell(4);
+                const descriptionCell = row.insertCell(5);
+
+                titleCell.textContent = show.title;
+                authorCell.textContent = show.author;
+                directorCell.textContent = show.director;
+                genreCell.textContent = show.genre;
+                yearCell.textContent = show.year;
+                descriptionCell.textContent = show.description;
+            });
+        }
+
+        displayShows(); // Call displayShows when the page loads
+    </script>
 </body>
 </html>

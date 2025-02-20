@@ -3,15 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style.css">
     <title>Film</title>
-    <!-- Bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
     <marquee class="rainbow-marquee"> Film </marquee>
     <h1>Add a New Film</h1>
 
-    <!-- Film form -->
     <form id="film-form" onsubmit="addFilm(event)">
         <label for="film-title">Title:</label>
         <input type="text" id="film-title" name="title" required><br><br>
@@ -34,13 +33,28 @@
         <button type="submit">Add Film</button>
     </form>
 
-    <!-- Firebase -->
+    <h2>Film List</h2>
+    <table id="film-table" border="1">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Director</th>
+                <th>Genre</th>
+                <th>Year</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            </tbody>
+    </table>
+
     <script type="module" src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
     <script type="module" src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDeQiMJRp_Yg-WdT6hF1aQsDfg45rxn9uc",
@@ -75,11 +89,38 @@
                 });
                 alert("Film added successfully!");
                 document.getElementById("film-form").reset();
+                displayFilms(); // Refresh the film list after adding a new film
             } catch (error) {
                 console.error("Error adding film: ", error);
                 alert("Error adding film. Please try again.");
             }
         };
+
+        async function displayFilms() {
+            const querySnapshot = await getDocs(collection(db, "films"));
+            const tableBody = document.querySelector("#film-table tbody");
+            tableBody.innerHTML = ""; // Clear the table before adding new data
+
+            querySnapshot.forEach((doc) => {
+                const film = doc.data();
+                const row = tableBody.insertRow();
+                const titleCell = row.insertCell(0);
+                const authorCell = row.insertCell(1);
+                const directorCell = row.insertCell(2);
+                const genreCell = row.insertCell(3);
+                const yearCell = row.insertCell(4);
+                const descriptionCell = row.insertCell(5);
+
+                titleCell.textContent = film.title;
+                authorCell.textContent = film.author;
+                directorCell.textContent = film.director;
+                genreCell.textContent = film.genre;
+                yearCell.textContent = film.year;
+                descriptionCell.textContent = film.description;
+            });
+        }
+
+        displayFilms(); // Call displayFilms when the page loads
     </script>
 </body>
 </html>

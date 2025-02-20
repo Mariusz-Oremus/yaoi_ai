@@ -24,15 +24,15 @@ window.addShow = async function(event) {
     const description = document.getElementById("show-description").value;
 
     try {
-        await addDoc(collection(db, "shows"), { // Changed "films" to "shows"
+        await addDoc(collection(db, "shows"), {
             title: title,
             author: author,
             director: director,
             genre: genre,
             year: year,
-            description: description
+            description: description,
+            createdAt: new Date() // Add timestamp
         });
-        // alert("Show added successfully!");
         document.getElementById("show-form").reset();
         displayShows(); // Refresh the show list after adding a new show
     } catch (error) {
@@ -43,11 +43,13 @@ window.addShow = async function(event) {
 
 async function displayShows() {
     const querySnapshot = await getDocs(collection(db, "shows"));
+    const shows = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })); // Convert to array of objects
+    shows.sort((a, b) => b.createdAt - a.createdAt); // Sort by createdAt (newest first)
+
     const tableBody = document.querySelector("#show-table tbody");
     tableBody.innerHTML = ""; // Clear the table before adding new data
 
-    querySnapshot.forEach((doc) => {
-        const show = doc.data();
+    shows.forEach(show => { // Use the sorted shows array
         const row = tableBody.insertRow();
         const titleCell = row.insertCell(0);
         const authorCell = row.insertCell(1);
@@ -58,7 +60,7 @@ async function displayShows() {
         const linkCell = row.insertCell(6);
 
         const link = document.createElement("a");
-        link.href = `entries/show-detail.html?id=${doc.id}`; // Create the link with the show ID
+        link.href = `entries/show-detail.html?id=${show.id}`; // Use show.id from the sorted array
         link.textContent = "Edit";
         linkCell.appendChild(link);
         titleCell.textContent = show.title;

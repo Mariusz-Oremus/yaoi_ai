@@ -3,14 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    
+    <link rel="stylesheet" href="style.css">
+    <title>Password Protected</title>
 </head>
-<body background="bg.jpg">
-    <marquee>
-        <h1>
-            YAOI AI
-        </h1>
-    </marquee>
+<body>
+    <div id="login_cont">
+        <marquee>
+            <h1> Yaoi AI </h1>
+        </marquee>
+        <form id="passwordForm">
+            <input type="password" name="main_pass" id="main_pass" placeholder="Enter Password">
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+
+    <script src="auth.js"></script>
 </body>
 </html>

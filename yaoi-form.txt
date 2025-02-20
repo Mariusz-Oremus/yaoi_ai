@@ -1,0 +1,56 @@
+1. Kategorie
+ a) Film
+ b) Show
+ c) Manga
+ d) Anime
+ e) Fanfic
+ f) Just ship
+
+a) Film:
+- Title
+- Director
+- Release year
+...
+- Rating
+ 
+b) Show:
+- Title
+- Director
+- Country
+- Release year
+...
+- Rating
+
+c) Manga:
+- Title
+- Author
+- Release year
+- Chapter count
+- Coloured?
+…
+- Rating
+
+d) Anime:
+- Title
+- Studio
+- Release year
+- Episode count
+- Pacing
+- Animation
+…
+- Rating
+
+e) Fanfic:
+- Title
+- Author
+- Source
+- Release year
+- Word count
+…
+- Rating
+
+f) Just ship:
+- yaoi #1
+- yaoi #2
+…
+- Rating

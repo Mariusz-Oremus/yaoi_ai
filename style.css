@@ -2,6 +2,10 @@
     font-family: 'Times New Roman', Times, serif;
 }
 
+body{
+    background-color:  #FAF9F6 !important;
+}
+
 .nav {
     display: flex;
     width: 100%;
@@ -54,6 +58,7 @@
     background-repeat: no-repeat;
     opacity: 0.5;
     z-index: -1;
+    transition: .3s;
 }
 
 .nav-link:hover::before {
@@ -125,6 +130,18 @@
     color: white !important;
     text-align: left;
     animation-duration: 10s;
+}
+
+.log-out-btn{
+    display: block;
+    width: 100%;
+    text-align: right;
+    margin-top: 20%;
+    color: rgb(226, 43, 211);
+}
+
+.log-out-btn:hover{
+    color: #680076;
 }
 
 /* Rainbow Animation */

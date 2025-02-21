@@ -144,6 +144,19 @@ body{
     color: #680076;
 }
 
+.details{
+    background: blue;
+    color: white;
+}
+
+.details button{
+    width: 110px; /* Adjust size as needed */
+    height: 110px; /* Adjust size as needed */
+    border-radius: 50%; /* Makes it a circle */
+    padding: 10px; /* Adjust padding as needed */
+    text-align: center;
+}
+
 /* Rainbow Animation */
 @keyframes rainbow {
     0% { color: red; }

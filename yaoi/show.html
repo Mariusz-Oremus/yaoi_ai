@@ -9,45 +9,64 @@
 </head>
 <body>
     <marquee class="rainbow-marquee"> Show </marquee>
-    <h1>Add a New Show</h1>
+    <div class="row align-items-start">
+        <div class="col">
+            <h2>Show List</h2>
+            <table id="show-table" class="cool-table" border="1">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Director</th>
+                        <th>Genre</th>
+                        <th>Year</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div class="col">
+            <h1 class="bigger" id="show-heading" style="cursor: pointer;">Add a New Show</h1>
 
-    <form id="show-form" onsubmit="addShow(event)">
-        <label for="show-title">Title:</label>
-        <input type="text" id="show-title" name="title" required><br><br>
+            <form id="show-form" onsubmit="addShow(event)" style="display: none;">
+                <label for="show-title">Title:</label>
+                <input type="text" id="show-title" name="title" required><br><br>
 
-        <label for="show-author">Author:</label>
-        <input type="text" id="show-author" name="author" required><br><br>
+                <label for="show-author">Author:</label>
+                <input type="text" id="show-author" name="author" required><br><br>
 
-        <label for="show-director">Director:</label>
-        <input type="text" id="show-director" name="director" required><br><br>
+                <label for="show-director">Director:</label>
+                <input type="text" id="show-director" name="director" required><br><br>
 
-        <label for="show-genre">Genre:</label>
-        <input type="text" id="show-genre" name="genre" required><br><br>
+                <label for="show-genre">Genre:</label>
+                <input type="text" id="show-genre" name="genre" required><br><br>
 
-        <label for="show-year">Year:</label>
-        <input type="number" id="show-year" name="year" required><br><br>
+                <label for="show-year">Year:</label>
+                <input type="number" id="show-year" name="year" required><br><br>
 
-        <label for="show-description">Description:</label><br>
-        <textarea id="show-description" name="description" rows="4" required></textarea><br><br>
+                <label for="show-description">Description:</label><br>
+                <textarea id="show-description" name="description" rows="4" required></textarea><br><br>
 
-        <button type="submit">Add Show</button>
-    </form>
+                <button type="submit">Add Show</button>
+            </form>
+        </div>
+    </div>
 
-    <h2>Show List</h2>
-    <table id="show-table" border="1">
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Director</th>
-                <th>Genre</th>
-                <th>Year</th>
-                <th>Description</th>
-            </tr>
-        </thead>
-        <tbody>
-            </tbody>
-    </table>
+    <a href="../yaoi.html" class="back-btn"><h1 class="spinner">Back</h1></a>
+
+    <script>
+        const heading = document.getElementById('show-heading');
+        const form = document.getElementById('show-form');
+    
+        heading.addEventListener('click', function() {
+            if (form.style.display === 'none' || form.style.display === '') {
+                form.style.display = 'block';
+            } else {
+                form.style.display = 'none';
+            }
+        });
+    </script>
 
     <script type="module" src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
     <script type="module" src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>

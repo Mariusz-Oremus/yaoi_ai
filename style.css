@@ -67,6 +67,31 @@
     color: red;
 }
 
+.bigger{
+    transition: 0.7s;
+    font-size: 50px;
+}
+
+.bigger:hover{
+    font-size: 80px;
+    color: blue;
+}
+
+.cool-table{
+    width: 100%;
+    margin: 5px;
+}
+
+.cool-table td, .cool-table th{
+    padding: 5px 0;
+    text-align: center;
+}
+
+.cool-table tr:hover{
+    background-color: blue;
+    color: white;
+}
+
 #passwordForm{
     text-align: center;
     font-size: 50px;
@@ -94,6 +119,11 @@
     animation-iteration-count: infinite;
     animation-duration: 3.5s;
     color: blue;
+}
+
+.back-btn .spinner{
+    color: white !important;
+    text-align: left;
 }
 
 /* Rainbow Animation */

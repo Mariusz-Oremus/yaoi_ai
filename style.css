@@ -1,3 +1,7 @@
+*{
+    font-family: 'Times New Roman', Times, serif;
+}
+
 .nav {
     display: flex;
     width: 100%;
@@ -17,6 +21,7 @@
     align-items: center;
     justify-content: center;
     height: 160px; /* Adjust as needed */
+    min-width: 240px;
     width: 100%;
     font-size: 24px;
     font-weight: bold;
@@ -55,12 +60,40 @@
     opacity: 0.7;
 }
 
+.login-banner{
+    text-align: center;
+    width: 630px;
+    font-size: 200px;
+    color: red;
+}
+
+#passwordForm{
+    text-align: center;
+    font-size: 50px;
+}
+
+#passwordForm input{
+    width: 75%;
+    text-align: center;
+}
+
 .rainbow-marquee {
     font-size: 30px;  /* Adjust size as needed */
     font-weight: bold;
     animation: rainbow 5s linear infinite;
     color: white;  /* Default color */
     padding: 10px;
+}
+
+.spinner {
+    font-size: 70px;
+    font-weight: 900;
+    text-align: center;
+    animation-name: spin, depth;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-duration: 3.5s;
+    color: blue;
 }
 
 /* Rainbow Animation */
@@ -73,4 +106,17 @@
     71% { color: indigo; }
     85% { color: violet; }
     100% { color: red; }
+}
+
+@keyframes spin {
+from { transform: rotateY(0deg); }
+to { transform: rotateY(-360deg); }
+}
+
+@keyframes depth {
+0% { text-shadow: 0 0 black; }
+25% { text-shadow: 1px 0 black, 2px 0 black, 3px 0 black, 4px 0 black, 5px 0 black; }
+50% { text-shadow: 0 0 black; }
+75% { text-shadow: -1px 0 black, -2px 0 black, -3px 0 black, -4px 0 black, -5px 0 black; }
+100% { text-shadow: 0 0 black; }
 }

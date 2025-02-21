@@ -124,6 +124,7 @@
 .back-btn .spinner{
     color: white !important;
     text-align: left;
+    animation-duration: 10s;
 }
 
 /* Rainbow Animation */

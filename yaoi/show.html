@@ -30,6 +30,10 @@
             <h1 class="bigger" id="show-heading" style="cursor: pointer;">Add a New Show</h1>
 
             <form id="show-form" onsubmit="addShow(event)" style="display: none;">
+
+                <label for="show-image">Photo:</label>
+                <input type="file" id="show-image" name="image" accept="image/*"><br><br>    
+
                 <label for="show-title">Title:</label>
                 <input type="text" id="show-title" name="title" required><br><br>
 

@@ -11,37 +11,52 @@
     <div class="details">
         <h1>Show Details</h1>
         <form id="show-edit-form">
-            <label for="show-title">Title:</label>
-            <input type="text" id="show-title" name="title" required><br><br>
+            <div class="row">
+                <div class="col">
+                    <label for="show-image">Current Image:</label><br>
+                    <img id="current-image" src="" style="max-width: 500px;"><br>
+                    <button type="button" id="remove-image" style="width: 100px !important; height: 64px !important;">Remove Image</button>
+                    <br><br>
 
-            <label for="show-author">Author:</label>
-            <input type="text" id="show-author" name="author" required><br><br>
+                    <label for="new-image">New Image:</label>
+                    <input type="file" id="new-image" name="image" accept="image/*"><br><br>
+                </div>
+                <div class="col">
+                    <label for="show-title">Title:</label>
+                    <input type="text" id="show-title" name="title" required><br><br>
 
-            <label for="show-director">Director:</label>
-            <input type="text" id="show-director" name="director" required><br><br>
+                    <label for="show-author">Author:</label>
+                    <input type="text" id="show-author" name="author" required><br><br>
 
-            <label for="show-genre">Genre:</label>
-            <input type="text" id="show-genre" name="genre" required><br><br>
+                    <label for="show-director">Director:</label>
+                    <input type="text" id="show-director" name="director" required><br><br>
 
-            <label for="show-year">Year:</label>
-            <input type="number" id="show-year" name="year" required><br><br>
+                    <label for="show-genre">Genre:</label>
+                    <input type="text" id="show-genre" name="genre" required><br><br>
 
-            <label for="show-description">Description:</label><br>
-            <textarea id="show-description" name="description" rows="4" required></textarea><br><br>
+                    <label for="show-year">Year:</label>
+                    <input type="number" id="show-year" name="year" required><br><br>
 
-            <button type="button" id="save-show">Save Changes</button>
-            <button type="button" id="back-button">Back</button> 
-            <br>
-            <button type="button" id="delete-show">Delete Show</button>
+                    <label for="show-description">Description:</label><br>
+                    <textarea id="show-description" name="description" rows="4" required></textarea><br><br>
+
+                    <button type="button" id="save-show">Save Changes</button>
+                    <button type="button" id="back-button">Back</button>
+                    <br>
+                    <button type="button" id="delete-show">Delete Show</button>
+                </div>
+            </div>
         </form>
     </div>
 
     <script type="module" src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
     <script type="module" src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm"></script>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
         import { getFirestore, doc, getDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
         const firebaseConfig = {
             apiKey: "AIzaSyDeQiMJRp_Yg-WdT6hF1aQsDfg45rxn9uc",
@@ -54,6 +69,11 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+
+        // Supabase Setup
+        const SUPABASE_URL = 'https://pdfcypahbimfivzhxnmg.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBkZmN5cGFoYmltZml2emh4bm1nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDAzNDA0ODEsImV4cCI6MjA1NTkxNjQ4MX0.OxvlL7J3rqPh5lI0e9YtYj-eN8oZG2UmOeocB2dpsQQ';
+        const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         const urlParams = new URLSearchParams(window.location.search);
         const showId = urlParams.get('id'); // Get the show ID from the URL
@@ -68,6 +88,7 @@
                 document.getElementById("show-genre").value = showData.genre;
                 document.getElementById("show-year").value = showData.year;
                 document.getElementById("show-description").value = showData.description;
+                document.getElementById("current-image").src = showData.image || ""; // Set the image source
             } else {
                 alert("Show not found!");
             }
@@ -84,7 +105,36 @@
                 year: document.getElementById("show-year").value,
                 description: document.getElementById("show-description").value
             };
+
+            const newImageInput = document.getElementById("new-image");
+            const newImageFile = newImageInput.files[0];
+
+            if (newImageFile) {
+                const { data, error } = await supabase.storage
+                    .from('yaoi-img')
+                    .upload(newImageFile.name, newImageFile, { upsert: true });
+
+                if (error) {
+                    console.error("Error uploading new image to Supabase: ", error);
+                    alert("Error uploading new image. Please try again.");
+                    return;
+                }
+
+                updatedShow.image = supabase.storage.from('yaoi-img').getPublicUrl(newImageFile.name).data.publicUrl;
+            }
+
             await updateDoc(doc(db, "shows", showId), updatedShow);
+            location.reload();
+
+        });
+
+        document.getElementById("remove-image").addEventListener("click", async () => {
+            const updatedShow = {
+                image: "" // Remove the image URL
+            };
+            await updateDoc(doc(db, "shows", showId), updatedShow);
+            document.getElementById("current-image").src = ""; // Clear the image display
+            location.reload();
         });
 
         document.getElementById("delete-show").addEventListener("click", async () => {

@@ -10,25 +10,32 @@ a) Film:
 - Title
 - Director
 - Release year
-...
+- Country
 - Rating
  
 b) Show:
 - Title
-- Director
 - Country
 - Release year
-...
+- Link/Source
+- 
 - Rating
 
 c) Manga:
+General:
 - Title
-- Author
 - Release year
 - Chapter count
-- Coloured?
-…
-- Rating
+- Length
+- Completed
+- Link/Source
+- Description
+Rate:
+- Rating: Plot, Art, Non-Con, Characters, Extra Points -> ( 0.5 * Plot + 0.2 * Art + 0.3 * Characters - Non-Con)
+- Yes/No Rate: Smut 
+- Genre: 
+- Tagi: Demon, Mafia ......... 
+
 
 d) Anime:
 - Title

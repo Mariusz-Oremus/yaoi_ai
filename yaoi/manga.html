@@ -3,16 +3,279 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style.css"> 
     <title>Manga</title>
-    <!-- Bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script defer src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
 </head>
 <body>
-    <marquee> Manga </marquee>
+    <marquee class="rainbow-marquee"> Manga </marquee>
+    <div class="row align-items-start">
+        <div class="col">
+            <h1 class="bigger" id="show-heading" style="cursor: pointer;">Add a New Manga</h1>
+    
+            <form id="show-form" onsubmit="addShow(event)">
+                <!-- Basic Info Section -->
+                <fieldset id="step-1">
+                    <legend>General Info</legend>
+                    <label for="manga-title">Title</label>
+                    <input type="text" id="manga-title" name="title" required><br><br>
 
+                    <label for="show-length">Length</label>
+                    <select id="show-length" name="length" required>
+                        <option value="very_short">Very Short</option>
+                        <option value="short">Short</option>
+                        <option value="medium">Medium</option>
+                        <option value="long">Long</option>
+                        <option value="very_long">Very Long</option>
+                    </select><br><br>
+
+                    <label for="manga-chapters">Number of Chapters</label>
+                    <input type="number" id="manga-chapters" name="chapters" required><br><br>
+
+                    <label for="manga-completed">Completion status</label>
+                    <select id="manga-completed" name="completed" required>
+                        <option value="finished">Finished</option>
+                        <option value="progress">In progress</option>
+                        <option value="dropped">Dropped by author</option>
+                    </select><br><br>
+
+                    <label for="manga-year">Year of Publication</label>
+                    <input type="number" id="manga-year" name="year" required><br><br>
+
+                    <label for="manga-country">Country</label>
+                    <input type="text" id="manga-country" name="country" required><br><br>
+
+                    <label for="manga-source">Source/Link</label>
+                    <input type="url" id="manga-source" name="source" required><br><br>
+
+                    <label for="plot-description">Description</label><br>
+                    <textarea id="plot-description" name="plot_description" rows="4" cols="50" placeholder="This is supposed to be only a short, general description... keep it brief... or you can just copy from other websites " required></textarea><br><br>
+                    <p id="word-count">Words: 0/100</p>
+
+                    <label for="show-image">Photo</label>
+                    <input type="file" id="show-image" name="image" accept="image/*" required><br><br>  
+
+                    <button type="button" onclick="nextStep(1)">Next</button>
+                </fieldset>
+
+                <fieldset id="step-2" style="display: none;">
+                    <legend>General Plot Info</legend>
+
+                    <label for="genre">Genre</label>
+                    <select id="genre" name="genre" required onchange="addGenre(this)">
+                        <option value="action">Action</option>
+                        <option value="adventure">Adventure</option>
+                        <option value="comedy">Comedy</option>
+                        <option value="drama">Drama</option>
+                        <option value="fantasy">Fantasy</option>
+                        <option value="historical">Historical</option>
+                        <option value="horror">Horror</option>
+                        <option value="mystery">Mystery</option>
+                        <option value="psychological">Psychological</option>
+                        <option value="romance">Romance</option>
+                        <option value="sci_fi">Sci-Fi</option>
+                        <option value="slice_of_life">Slice of Life</option>
+                        <option value="supernatural">Supernatural</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <input type="text" id="genre-other" name="genre_other" style="display:none;" placeholder="Enter your genre here"><br><br>
+                    <button type="button" id="add-genre-other" style="display:none;" onclick="addOtherGenre()">Add</button><br><br>
+                    <div id="selected-genres"></div>
+
+                    <label for="trope">Dynamics/Tropes</label>
+                    <select id="trope" name="trope" required onchange="toggleOtherInput(this, 'trope-other')">
+                        <option value="first">First Love</option>
+                        <option value="forbidden">Forbidden Love</option>
+                        <option value="slow">Slow Burn</option>
+                        <option value="triangle">Love Triangle</option>
+                        <option value="ex">Gay...(Bi) Awakening (Ex-Girlfriend)</option>
+                        <option value="unrequited">Unrequited Love</option>
+                        <option value="opposites">Opposites Attract</option>
+                        <option value="age-gap">Age Gap</option>
+                        <option value="enemies">Enemies to Lovers</option>
+                        <option value="friends_lov">Friends to Lovers</option>
+                        <option value="chi_friends">Childhood Friends to Lovers</option>
+                        <option value="reunion_friends">Reunion After Years</option>
+                        <option value="reverse">Reverse Roles (unexpected seme/uke)</option>
+                        <option value="overprotective">Overprotective (top)</option>
+                        <option value="tsundere">Tsundere</option>
+                        <option value="yandere">Yandere</option>
+                        <option value="toxic">Toxic Love</option>
+                        <option value="love-hate">Love-Hate</option>
+                        <option value="secret">Secret Lovers</option>
+                        <option value="sugar">Sugar Daddy</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <input type="text" id="trope-other" name="trope_other" style="display:none;" placeholder="Enter your trope tag here"><br><br>
+
+                    <label for="setting">Setting</label>
+                    <select id="setting" name="setting" required onchange="toggleOtherInput(this, 'setting-other')">
+                        <option value="school">High School</option>
+                        <option value="university_college">University/College</option>
+                        <option value="office_workplace">Office/Workplace</option>
+                        <option value="cafe_bakery">Café/Bakery</option>
+                        <option value="bar_nightclub">Bar/Nightclub</option>
+                        <option value="city">City</option>
+                        <option value="small_town_village">Small Town/Village</option>
+                        <option value="underground_illegal">Underground/Illegal Setting</option>
+                        <option value="royal_palace">Royal Palace</option>
+                        <option value="ancient_temple_shrine">Ancient Temple/Shrine</option>
+                        <option value="post_apocalyptic">Post-Apocalyptic World</option>
+                        <option value="virtual_reality_multiverse">Virtual Reality/Multiverse</option>
+                        <option value="space">Space</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <input type="text" id="setting-other" name="setting_other" style="display:none;" placeholder="Enter your setting tag here"><br><br>
+
+                    <label for="characters">Characters types</label>
+                    <select id="characters" name="characters" required onchange="toggleOtherInput(this, 'char-other')">
+                        <option value="classmates">Classmates</option>
+                        <option value="top_student_failing_student">Top Student x Failing Student</option>
+                        <option value="teacher_student">Teacher x Student</option>
+                        <option value="roommates">Roommates</option>
+                        <option value="ceo_employee">CEO x Employee</option>
+                        <option value="colleagues">Colleagues</option>
+                        <option value="fan_idol">Fan x Idol</option>
+                        <option value="sports_boy_coach">Sports Boy x Coach</option>
+                        <option value="bandmates">Bandmates</option>
+                        <option value="detective_criminal">Detective x Criminal</option>
+                        <option value="prince_servant">Prince x Servant</option>
+                        <option value="doctor_patient">Doctor x Patient</option>
+                        <option value="kidnapper_victim">Kidnapper x Victim</option>
+                        <option value="demons">Demons</option>
+                        <option value="vampires">Vampires</option>
+                        <option value="werewolves">Werewolves</option>
+                        <option value="alpha_omega">Alpha x Omega</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <input type="text" id="char-other" name="char_other" style="display:none;" placeholder="Enter your characters tag here"><br><br>
+                    
+                    <label for="energy">Characters energy</label>
+                    <select id="energy" name="energy" required onchange="toggleOtherInput(this, 'energy-other')">
+                        <option value="cold_warm">Cold x Warm</option>
+                        <option value="rich_poor">Rich x Poor</option>
+                        <option value="genius_stupid">Genius x Stupid/Crazy ;p</option>
+                        <option value="grumpy_sunshine">Grumpy x Sunshine</option>
+                        <option value="introvert_extrovert">Introvert x Extrovert</option>
+                        <option value="innocent_playboy">Innocent x Playboy</option>
+                        <option value="strict_rulebreaker">Strict x Rulebreaker</option>
+                        <option value="logical_emotional">Logical x Emotional</option>
+                        <option value="quiet_talkative">Quiet x Talkative</option>
+                        <option value="mature_childlike">Mature x Childlike</option>
+                        <option value="sarcastic_sweetheart">Sarcastic x Sweetheart</option>
+                        <option value="jealous_flirty">Jealous x Flirty</option>
+                        <option value="popular_invisible">Popular x Invisible</option>
+                        <option value="hero_antihero">Hero x Anti-Hero</option>
+                        <option value="angsty_carefree">Angsty x Carefree</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <input type="text" id="energy-other" name="energy_other" style="display:none;" placeholder="Enter your energy tag here"><br><br>
+
+                    <label for="mood">Mood, vibes, emotions</label>
+                    <select id="mood" name="mood" required onchange="toggleOtherInput(this, 'mood-other')">
+                        <option value="fluff">Fluff</option>
+                        <option value="wholesome">Wholesome</option>
+                        <option value="funny">Funny</option>
+                        <option value="innocent">Innocent/Pure</option>
+                        <option value="angsty">Angsty</option>
+                        <option value="nostalgic">Nostalgic</option>
+                        <option value="tragic">Tragic</option>
+                        <option value="mysterious">Mysterious</option>
+                        <option value="toxic">Toxic</option>
+                        <option value="violent">Violent</option>
+                        <option value="awkward">Awkward</option>
+                        <option value="chaotic">Chaotic</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <input type="text" id="mood-other" name="mood_other" style="display:none;" placeholder="Enter your mood tag here"><br><br>
+
+                    <label for="tw">Trigger warnings/Controversial topics</label>
+                    <select id="tw" name="tw" required onchange="toggleOtherInput(this, 'tw-other')">
+                        <option value="toxic_rel">Toxic Relationship</option>
+                        <option value="mental ">Mental Illness</option>
+                        <option value="self-harm">Self-Harm</option>
+                        <option value="trauma">Trauma & PTSD</option>
+                        <option value="assault">Sexual Assault/Non-Consensual Acts</option>
+                        <option value="stockholm">Stockholm Syndrome</option>
+                        <option value="gore">Gore</option>
+                        <option value="rape">Rape</option>
+                        <option value="master">Master/Slave</option>
+                        <option value="malepreg">Male Pregnancy</option>
+                        <option value="no_girls">Lack of Female Representation</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <input type="text" id="tw-other" name="tw_other" style="display:none;" placeholder="Enter your TW tag here"><br><br>
+
+                    <button type="button" onclick="nextStep(2)">Next</button>
+
+                </fieldset>
+
+                    <!--
+                    <label for="plot-rating">Plot Rating (1-10):</label>
+                    <input type="number" id="plot-rating" name="plot_rating" min="1" max="10" required><br><br>
+
+                    <label for="art-rating">Art Rating (1-10):</label>
+                    <input type="number" id="art-rating" name="art_rating" min="1" max="10" required><br><br>
+
+                    <label for="smut-level">Smut explicitness level</label>
+                    <select id="smut-level" name="smut-level" required>
+                        <option value="very_mild">Very Mild</option>
+                        <option value="mild">Mild</option>
+                        <option value="moderate">Moderate</option>
+                        <option value="strong">Strong</option>
+                        <option value="very_strong">Very Strong</option>
+                    </select><br><br>
+
+                    <label for="character-rating">Character Rating (1-10):</label>
+                    <input type="number" id="character-rating" name="character_rating" min="1" max="10" required><br><br>
+
+                    <button type="button" onclick="nextStep(2)">Next</button>
+                    -->
+
+                
+
+                <!-- Rating Section -->
+                <fieldset id="step-3" style="display: none;">
+                    
+                    <label for="plot-rating">Plot Rating (0-10):</label>
+                    <input type="number" id="plot-rating" name="plot_rating" min="0" max="10" step="0.1" required>
+                    <button type="button" onclick="toggleExplain('plot-explain')">Explain</button>
+                    <textarea id="plot-explain" name="plot_explain" style="display: none;" placeholder="Explain your plot rating..."></textarea>
+                    <br><br>
+                
+                    <!-- Art Rating -->
+                    <label for="art-rating">Art Rating (0-10):</label>
+                    <input type="number" id="art-rating" name="art_rating" min="0" max="10" step="0.1" required>
+                    <button type="button" onclick="toggleExplain('art-explain')">Explain</button>
+                    <textarea id="art-explain" name="art_explain" style="display: none;" placeholder="Explain your art rating..."></textarea>
+                    <br><br>
+                
+                    <!-- Character Rating -->
+                    <label for="character-rating">Character Rating (0-10):</label>
+                    <input type="number" id="character-rating" name="character_rating" min="0" max="10" step="0.1" required>
+                    <button type="button" onclick="toggleExplain('character-explain')">Explain</button>
+                    <textarea id="character-explain" name="character_explain" style="display: none;" placeholder="Explain your charcters rating..."></textarea>
+                    <br><br>
+
+                    <label for="extra-points">Extra Points (0-2):</label>
+                    <input type="number" id="extra-points" name="extra_points" min="0" max="2" step="0.1" required>
+                    <button type="button" onclick="toggleExplain('extra-points-explain')">Explain</button>
+                    <textarea id="extra-points-explain" name="extra_points_explain" style="display: none;" placeholder="Explain what about manga deserves extra points"></textarea>
+                    <br><br>
+
+                    <button type="submit">Add Show</button>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+
+    <a href="../yaoi.html" class="back-btn"><h1 class="spinner">Back</h1></a>
+
+    <!--
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+    -->
+
+    <script src="../yaoi/js/manga.js"></script>
 </body>
 </html>

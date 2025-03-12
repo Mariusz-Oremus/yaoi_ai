@@ -181,3 +181,13 @@ to { transform: rotateY(-360deg); }
 75% { text-shadow: -1px 0 black, -2px 0 black, -3px 0 black, -4px 0 black, -5px 0 black; }
 100% { text-shadow: 0 0 black; }
 }
+
+.genre-tag {
+    display: inline-block;
+    background-color: #3498db;
+    color: white;
+    padding: 5px 10px;
+    margin: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
